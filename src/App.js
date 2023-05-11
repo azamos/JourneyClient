@@ -1,25 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState,useEffect } from 'react';
+import Journey from './components/Journey';
+import DEV_DB from './constants';
 
-function App() {
+const App = () => {
+  const [journeys,setJourneys] = useState([]);
+  useEffect(()=>{
+    fetch(`${DEV_DB}/journeys`)
+    .then(res=>res.json())
+    .then(res=>{setJourneys(res);})
+    .catch(err=>console.log(err))
+  },[]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className='JourneysContainer'>
+        {journeys.map(journey=><Journey key={journey.id} data = {journey}/>)}
+      </div>
     </div>
   );
-}
+
+};
 
 export default App;
